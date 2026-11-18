@@ -2,6 +2,8 @@ name: report
 
 # Clamp Index reporter 2: every 15 minutes, five minutes after reporter 1,
 # so two fresh reports meet the quorum in every round.
+# GitHub may start or skip scheduled runs late under load; the other two
+# reporters keep the quorum when that happens.
 on:
   schedule:
     - cron: "5,20,35,50 * * * *"
