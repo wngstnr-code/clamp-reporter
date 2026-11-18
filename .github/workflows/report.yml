@@ -1,12 +1,10 @@
 name: report
 
-# Clamp Index reporter 2: every 15 minutes, five minutes after reporter 1,
-# so two fresh reports meet the quorum in every round.
-# GitHub may start or skip scheduled runs late under load; the other two
-# reporters keep the quorum when that happens.
+# Clamp Index reporter 2: started every 15 minutes, five minutes after
+# reporter 1, by a Supabase pg_cron job through the GitHub API
+# (workflow_dispatch). GitHub's own schedule trigger did not start this
+# workflow reliably, so it is not used (no double runs).
 on:
-  schedule:
-    - cron: "5,20,35,50 * * * *"
   workflow_dispatch:
 
 permissions:
