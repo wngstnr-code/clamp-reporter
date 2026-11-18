@@ -1,0 +1,29 @@
+name: report
+
+# Clamp Index reporter 2: every 15 minutes, five minutes after reporter 1,
+# so two fresh reports meet the quorum in every round.
+on:
+  schedule:
+    - cron: "5,20,35,50 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Report prices to the Clamp Index (devnet)
+        env:
+          REPORTER_KEYPAIR: ${{ secrets.REPORTER_KEYPAIR }}
+        run: node --no-deprecation reporter.mjs
